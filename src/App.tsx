@@ -16,7 +16,9 @@ import 'prismjs/components/prism-csharp';
 import 'prismjs/components/prism-swift';
 import 'prismjs/components/prism-kotlin';
 import 'prismjs/components/prism-haskell';
+import 'prismjs/components/prism-lisp';
 import 'prismjs/components/prism-ruby';
+import 'prismjs/components/prism-markup-templating';
 import 'prismjs/components/prism-php';
 import 'prismjs/components/prism-sql';
 import 'prismjs/components/prism-perl';
@@ -24,6 +26,7 @@ import 'prismjs/components/prism-scala';
 import 'prismjs/components/prism-dart';
 import 'prismjs/components/prism-lua';
 import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-nasm';
 
 // Import themes
 import 'prism-themes/themes/prism-material-dark.css';
@@ -48,7 +51,7 @@ function getLanguageClass(langName: string): string {
     'Ruby': 'ruby',
     'PHP': 'php',
     'SQL': 'sql',
-    'Assembly': 'asm',
+    'Assembly': 'nasm',
     'Perl': 'perl',
     'Scala': 'scala',
     'Dart': 'dart',
@@ -60,7 +63,8 @@ function getLanguageClass(langName: string): string {
 
 function highlightCode(code: string, langName: string): string {
   const lang = getLanguageClass(langName);
-  return Prism.highlight(code, Prism.languages[lang], lang);
+  const grammar = Prism.languages[lang] ?? Prism.languages.clike;
+  return Prism.highlight(code, grammar, lang);
 }
 
 const typeDescriptions: Record<LanguageType, string> = {
