@@ -155,6 +155,12 @@ h1 {
   font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
   font-size: 0.9rem;
   color: var(--muted);
+  animation: terminalGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes terminalGlow {
+  from { box-shadow: 0 22px 70px rgba(0, 0, 0, 0.28); }
+  to { box-shadow: 0 22px 70px rgba(66, 245, 176, 0.2); }
 }
 
 .terminal span::before {
@@ -312,6 +318,28 @@ h1 {
 .languageGroup {
   display: grid;
   gap: 16px;
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.languageGroup:nth-child(1) { animation-delay: 0.1s; }
+.languageGroup:nth-child(2) { animation-delay: 0.2s; }
+.languageGroup:nth-child(3) { animation-delay: 0.3s; }
+.languageGroup:nth-child(4) { animation-delay: 0.4s; }
+.languageGroup:nth-child(5) { animation-delay: 0.5s; }
+.languageGroup:nth-child(6) { animation-delay: 0.6s; }
+.languageGroup:nth-child(7) { animation-delay: 0.7s; }
+.languageGroup:nth-child(8) { animation-delay: 0.8s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .groupHeader {
@@ -418,11 +446,170 @@ pre {
   background: var(--code);
 }
 
+.codeBlock {
+  position: relative;
+}
+
+.copyButton {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.copyButton:hover {
+  background: var(--accent-strong);
+}
+
 code {
   color: var(--text);
   font-family: "Cascadia Code", "Fira Code", Consolas, monospace;
   font-size: 0.9rem;
   line-height: 1.6;
+}
+
+/* Prism syntax highlighting overrides */
+.app[data-theme="dark"] pre[class*="language-"] {
+  background: var(--code);
+  color: #eeffff;
+}
+
+.app[data-theme="light"] pre[class*="language-"] {
+  background: var(--code);
+  color: #2d3748;
+}
+
+.app[data-theme="dark"] .token.comment,
+.app[data-theme="dark"] .token.prolog,
+.app[data-theme="dark"] .token.doctype,
+.app[data-theme="dark"] .token.cdata {
+  color: #546e7a;
+}
+
+.app[data-theme="light"] .token.comment,
+.app[data-theme="light"] .token.prolog,
+.app[data-theme="light"] .token.doctype,
+.app[data-theme="light"] .token.cdata {
+  color: #a0aec0;
+}
+
+.app[data-theme="dark"] .token.punctuation {
+  color: #89ddff;
+}
+
+.app[data-theme="light"] .token.punctuation {
+  color: #4a5568;
+}
+
+.app[data-theme="dark"] .token.property,
+.app[data-theme="dark"] .token.tag,
+.app[data-theme="dark"] .token.constant,
+.app[data-theme="dark"] .token.symbol,
+.app[data-theme="dark"] .token.deleted {
+  color: #ffcb6b;
+}
+
+.app[data-theme="light"] .token.property,
+.app[data-theme="light"] .token.tag,
+.app[data-theme="light"] .token.constant,
+.app[data-theme="light"] .token.symbol,
+.app[data-theme="light"] .token.deleted {
+  color: #d69e2e;
+}
+
+.app[data-theme="dark"] .token.boolean,
+.app[data-theme="dark"] .token.number {
+  color: #c792ea;
+}
+
+.app[data-theme="light"] .token.boolean,
+.app[data-theme="light"] .token.number {
+  color: #805ad5;
+}
+
+.app[data-theme="dark"] .token.selector,
+.app[data-theme="dark"] .token.attr-name,
+.app[data-theme="dark"] .token.string,
+.app[data-theme="dark"] .token.char,
+.app[data-theme="dark"] .token.builtin,
+.app[data-theme="dark"] .token.inserted {
+  color: #c3e88d;
+}
+
+.app[data-theme="light"] .token.selector,
+.app[data-theme="light"] .token.attr-name,
+.app[data-theme="light"] .token.string,
+.app[data-theme="light"] .token.char,
+.app[data-theme="light"] .token.builtin,
+.app[data-theme="light"] .token.inserted {
+  color: #38a169;
+}
+
+.app[data-theme="dark"] .token.operator,
+.app[data-theme="dark"] .token.entity,
+.app[data-theme="dark"] .token.url,
+.app[data-theme="dark"] .token.variable {
+  color: #f07178;
+}
+
+.app[data-theme="light"] .token.operator,
+.app[data-theme="light"] .token.entity,
+.app[data-theme="light"] .token.url,
+.app[data-theme="light"] .token.variable {
+  color: #e53e3e;
+}
+
+.app[data-theme="dark"] .token.atrule,
+.app[data-theme="dark"] .token.attr-value,
+.app[data-theme="dark"] .token.keyword {
+  color: #82aaff;
+}
+
+.app[data-theme="light"] .token.atrule,
+.app[data-theme="light"] .token.attr-value,
+.app[data-theme="light"] .token.keyword {
+  color: #3182ce;
+}
+
+.app[data-theme="dark"] .token.function {
+  color: #82aaff;
+}
+
+.app[data-theme="light"] .token.function {
+  color: #3182ce;
+}
+
+.app[data-theme="dark"] .token.regex,
+.app[data-theme="dark"] .token.important {
+  color: #ffcb6b;
+}
+
+.app[data-theme="light"] .token.regex,
+.app[data-theme="light"] .token.important {
+  color: #d69e2e;
+}
+
+.geekDetails {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 16px;
+  margin: 0;
+}
+
+.geekDetails dt {
+  font-weight: bold;
+  color: var(--accent);
+}
+
+.geekDetails dd {
+  margin: 0;
+  color: var(--muted);
 }
 
 .emptyState {

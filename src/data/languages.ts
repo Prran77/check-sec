@@ -18,6 +18,9 @@ export type Language = {
   helloWorld: string;
   facts: string[];
   easterEggs: string[];
+  paradigms?: string[];
+  memoryModel?: string;
+  ecosystem?: string;
 };
 
 export const languages: Language[] = [
@@ -39,6 +42,9 @@ export const languages: Language[] = [
       "The phrase 'hello, world' became famous through The C Programming Language book.",
       "Obfuscated C contests turned valid C into an art form of readable unreadability.",
     ],
+    paradigms: ["Imperative", "Procedural", "Structured"],
+    memoryModel: "Manual memory management with malloc/free",
+    ecosystem: "Massive - used in operating systems, embedded systems, compilers, and as the basis for many other languages",
   },
   {
     name: "C++",
@@ -77,6 +83,9 @@ export const languages: Language[] = [
       "The compiler's messages are famously friendly and often include practical suggestions.",
       "Ferris, the Rust mascot, appears throughout the community and docs.",
     ],
+    paradigms: ["Multi-paradigm", "Functional", "Imperative", "Concurrent"],
+    memoryModel: "Ownership-based with RAII, no garbage collector",
+    ecosystem: "Growing rapidly - Cargo registry has 100k+ crates, used in systems, web (WASM), CLI tools, and embedded",
   },
   {
     name: "JavaScript",
@@ -96,6 +105,9 @@ export const languages: Language[] = [
       "Try [] + [] and [] + {} in a console if you enjoy type coercion riddles.",
       "The web console is full of tiny jokes on major sites, including recruiting messages.",
     ],
+    paradigms: ["Multi-paradigm", "Event-driven", "Functional", "Imperative"],
+    memoryModel: "Automatic garbage collection (mark-and-sweep)",
+    ecosystem: "Huge - npm has over 1.5 million packages, runs in browsers, servers (Node.js), mobile, desktop, and IoT",
   },
   {
     name: "TypeScript",
@@ -134,6 +146,9 @@ export const languages: Language[] = [
       "Run import this to see The Zen of Python.",
       "Python has a __future__ module for opting into upcoming behavior.",
     ],
+    paradigms: ["Multi-paradigm", "Object-oriented", "Imperative", "Functional"],
+    memoryModel: "Automatic reference counting with cyclic garbage collection",
+    ecosystem: "Extensive - PyPI has over 400k packages, used in web (Django/Flask), data science, AI, automation, and more",
   },
   {
     name: "R",
@@ -342,6 +357,120 @@ export const languages: Language[] = [
     easterEggs: [
       "SQL is often pronounced both 'sequel' and 'S-Q-L', depending on who is nearby.",
       "Recursive CTEs can make SQL feel unexpectedly algorithmic.",
+    ],
+  },
+  {
+    name: "Assembly",
+    type: "Systems",
+    year: 1949,
+    creator: "Kathleen Booth",
+    tagline: "The raw machine code that speaks directly to silicon.",
+    history:
+      "Assembly languages emerged as human-readable representations of machine code, evolving with each processor architecture and becoming the foundation for all higher-level languages.",
+    helloWorld: '; x86-64 Linux\n\nsection .data\n  msg db "Hello, World!", 10\n  len equ $ - msg\n\nsection .text\n  global _start\n\n_start:\n  mov rax, 1        ; sys_write\n  mov rdi, 1        ; stdout\n  mov rsi, msg\n  mov rdx, len\n  syscall\n\n  mov rax, 60       ; sys_exit\n  xor rdi, rdi\n  syscall',
+    facts: [
+      "Every high-level language compiles down to assembly at some point.",
+      "Different CPUs have different assembly languages - x86, ARM, RISC-V, etc.",
+      "Modern compilers generate better assembly than most humans can write.",
+    ],
+    easterEggs: [
+      "The first assembly language was created for the EDSAC computer in 1949.",
+      "Assembly programmers often have strong opinions about tabs vs spaces.",
+    ],
+  },
+  {
+    name: "Perl",
+    type: "Scripting",
+    year: 1987,
+    creator: "Larry Wall",
+    tagline: "The duct tape of the internet, with regex superpowers.",
+    history:
+      "Perl was created to make report processing easier and grew into a powerful scripting language that powered much of the early web and system administration.",
+    helloWorld: 'print "Hello, World!\\n";',
+    facts: [
+      "Perl's motto is 'There's more than one way to do it' (TMTOWTDI).",
+      "It has powerful regular expressions built into the language.",
+      "CPAN (Comprehensive Perl Archive Network) is one of the oldest package repositories.",
+    ],
+    easterEggs: [
+      "Perl's creator Larry Wall is also a linguist, which influenced the language's design.",
+      "The language has a built-in variable $_ that many newcomers find confusing.",
+    ],
+  },
+  {
+    name: "Scala",
+    type: "Backend",
+    year: 2004,
+    creator: "Martin Odersky",
+    tagline: "Object-oriented meets functional in the JVM's most elegant resident.",
+    history:
+      "Scala was designed to be a better Java, combining object-oriented and functional programming paradigms while maintaining JVM compatibility.",
+    helloWorld: 'object HelloWorld {\n  def main(args: Array[String]): Unit = {\n    println("Hello, World!")\n  }\n}',
+    facts: [
+      "Scala compiles to JVM bytecode and can call Java libraries directly.",
+      "It supports both mutable and immutable data structures.",
+      "The language is used heavily in big data processing (Spark) and web frameworks (Play).",
+    ],
+    easterEggs: [
+      "Scala's name comes from 'scalable language'.",
+      "It has a REPL (Read-Eval-Print Loop) for interactive programming.",
+    ],
+  },
+  {
+    name: "Dart",
+    type: "Web Frontend",
+    year: 2011,
+    creator: "Google",
+    tagline: "Google's answer to JavaScript, with Flutter's mobile ambitions.",
+    history:
+      "Dart was created by Google to address JavaScript's shortcomings and became the language behind Flutter for cross-platform mobile development.",
+    helloWorld: 'void main() {\n  print("Hello, World!");\n}',
+    facts: [
+      "Dart can compile to JavaScript for web use or native code for mobile.",
+      "Flutter uses Dart to create native iOS and Android apps from a single codebase.",
+      "It has strong typing with type inference for developer productivity.",
+    ],
+    easterEggs: [
+      "Dart's mascot is a penguin wearing a spacesuit.",
+      "The language was initially controversial for competing with JavaScript.",
+    ],
+  },
+  {
+    name: "Lua",
+    type: "Scripting",
+    year: 1993,
+    creator: "Roberto Ierusalimschy, Luiz Henrique de Figueiredo, Waldemar Celes",
+    tagline: "The embeddable scripting language that powers games and extensibility.",
+    history:
+      "Lua was designed as a scripting extension language and became popular for game development and embedded systems due to its small size and speed.",
+    helloWorld: 'print("Hello, World!")',
+    facts: [
+      "Lua is used in World of Warcraft for addons and many games for scripting.",
+      "It's designed to be embedded in C/C++ applications.",
+      "The language has a register-based virtual machine for efficiency.",
+    ],
+    easterEggs: [
+      "Lua means 'moon' in Portuguese, the native language of its creators.",
+      "It's used in Redis for scripting and Nginx for configuration.",
+    ],
+  },
+  {
+    name: "Shell",
+    type: "Scripting",
+    year: 1977,
+    creator: "Stephen Bourne",
+    tagline: "The command-line orchestrator that turns text into actions.",
+    history:
+      "The Bourne shell (sh) became the standard Unix shell and inspired Bash, which is now the most common shell on Linux and macOS systems.",
+    helloWorld: '#!/bin/bash\necho "Hello, World!"',
+    facts: [
+      "Shell scripts automate system administration and development workflows.",
+      "Pipes (|) allow chaining commands together in powerful ways.",
+      "Environment variables and exit codes are fundamental to shell programming.",
+    ],
+    easterEggs: [
+      "The 'shebang' (#!) tells the system which interpreter to use.",
+      "Shell scripts can be surprisingly complex - some are full applications.",
     ],
   },
 ];

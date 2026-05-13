@@ -1,5 +1,67 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { languageTypes, languages, type Language, type LanguageType } from "./data/languages";
+import Prism from 'prismjs';
+
+// Import core languages
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-python';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-c';
+import 'prismjs/components/prism-cpp';
+import 'prismjs/components/prism-rust';
+import 'prismjs/components/prism-go';
+import 'prismjs/components/prism-csharp';
+import 'prismjs/components/prism-swift';
+import 'prismjs/components/prism-kotlin';
+import 'prismjs/components/prism-haskell';
+import 'prismjs/components/prism-ruby';
+import 'prismjs/components/prism-php';
+import 'prismjs/components/prism-sql';
+import 'prismjs/components/prism-perl';
+import 'prismjs/components/prism-scala';
+import 'prismjs/components/prism-dart';
+import 'prismjs/components/prism-lua';
+import 'prismjs/components/prism-bash';
+
+// Import themes
+import 'prism-themes/themes/prism-material-dark.css';
+import 'prism-themes/themes/prism-material-light.css';
+
+function getLanguageClass(langName: string): string {
+  const langMap: Record<string, string> = {
+    'C': 'c',
+    'C++': 'cpp',
+    'Rust': 'rust',
+    'JavaScript': 'javascript',
+    'TypeScript': 'typescript',
+    'Python': 'python',
+    'R': 'r',
+    'Java': 'java',
+    'Go': 'go',
+    'C#': 'csharp',
+    'Swift': 'swift',
+    'Kotlin': 'kotlin',
+    'Haskell': 'haskell',
+    'Lisp': 'lisp',
+    'Ruby': 'ruby',
+    'PHP': 'php',
+    'SQL': 'sql',
+    'Assembly': 'asm',
+    'Perl': 'perl',
+    'Scala': 'scala',
+    'Dart': 'dart',
+    'Lua': 'lua',
+    'Shell': 'bash',
+  };
+  return langMap[langName] || 'clike';
+}
+
+function highlightCode(code: string, langName: string): string {
+  const lang = getLanguageClass(langName);
+  return Prism.highlight(code, Prism.languages[lang], lang);
+}
 
 const typeDescriptions: Record<LanguageType, string> = {
   Systems: "Close to the metal, tuned for control, speed, and serious consequences.",
@@ -16,18 +78,32 @@ function App() {
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [activeType, setActiveType] = useState<LanguageType | "All">("All");
   const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState<Language>(languages[0]);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light' || savedTheme === 'dark') {
+      setTheme(savedTheme);
+    }
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedQuery(query), 300);
+    return () => clearTimeout(timer);
+  }, [query]);
 
   const filteredLanguages = useMemo(() => {
     return languages.filter((language) => {
       const matchesType = activeType === "All" || language.type === activeType;
       const matchesQuery = `${language.name} ${language.creator} ${language.tagline}`
         .toLowerCase()
-        .includes(query.toLowerCase());
+        .includes(debouncedQuery.toLowerCase());
 
       return matchesType && matchesQuery;
     });
-  }, [activeType, query]);
+  }, [activeType, debouncedQuery]);
 
   const groupedLanguages = useMemo(() => {
     return languageTypes
@@ -37,6 +113,16 @@ function App() {
       }))
       .filter((group) => group.languages.length > 0);
   }, [filteredLanguages]);
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(selectedLanguage.helloWorld);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
+  };
 
   return (
     <main className="app" data-theme={theme}>
@@ -104,7 +190,11 @@ function App() {
           <span>Light</span>
           <input
             checked={theme === "light"}
-            onChange={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
+            onChange={() => setTheme((current) => {
+              const newTheme = current === "dark" ? "light" : "dark";
+              localStorage.setItem('theme', newTheme);
+              return newTheme;
+            })}
             type="checkbox"
           />
           <span className="switch" aria-hidden="true" />
@@ -157,9 +247,17 @@ function App() {
 
           <section>
             <h3>Hello World</h3>
-            <pre>
-              <code>{selectedLanguage.helloWorld}</code>
-            </pre>
+            <div className="codeBlock">
+              <pre>
+                <code 
+                  className={`language-${getLanguageClass(selectedLanguage.name)}`}
+                  dangerouslySetInnerHTML={{ __html: highlightCode(selectedLanguage.helloWorld, selectedLanguage.name) }}
+                />
+              </pre>
+              <button className="copyButton" onClick={copyToClipboard}>
+                {copied ? 'Copied!' : 'Copy'}
+              </button>
+            </div>
           </section>
 
           <section>
@@ -178,6 +276,18 @@ function App() {
                 <li key={egg}>{egg}</li>
               ))}
             </ul>
+          </section>
+
+          <section>
+            <h3>Geeky Details</h3>
+            <dl className="geekDetails">
+              <dt>Paradigms</dt>
+              <dd>{selectedLanguage.paradigms?.join(", ") || "Not specified"}</dd>
+              <dt>Memory Model</dt>
+              <dd>{selectedLanguage.memoryModel || "Not specified"}</dd>
+              <dt>Ecosystem</dt>
+              <dd>{selectedLanguage.ecosystem || "Not specified"}</dd>
+            </dl>
           </section>
         </aside>
       </section>
